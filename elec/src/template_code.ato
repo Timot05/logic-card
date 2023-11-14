@@ -1,0 +1,28 @@
+# this is template code for an ato project
+# if you wish to discover the implementation of a
+# more complex project, head over to:
+# https://gitlab.atopile.io/atopile/servo-drive
+
+import Resistor from "std/resistor.ato"
+import Capacitor from "std/capacitor.ato"
+
+component Timer555Dip8:
+    signal gnd ~ pin p1
+    signal trigger ~ pin p2
+    signal output ~ pin p3
+    signal reset ~ pin p4
+    signal ctrl_v ~ pin p5
+    signal threshold ~ pin p6
+    signal discharge ~ pin p7
+    signal vcc ~ pin p8
+
+    footprint = "lib:DIP-8_L9.7-W6.4-P2.54-LS7.6-BL"
+
+module Timer555:
+    signal vcc_5v
+    signal gnd
+
+    timer = new Timer555Dip8
+
+    timer.vcc ~ vcc_5v
+    timer.gnd ~ gnd

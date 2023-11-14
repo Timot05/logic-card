@@ -1,0 +1,11 @@
+ato-version: ^0.0.18
+paths:
+  build: ../../build/
+builds:
+  default:
+    root-file: template_code.ato
+    root-node: template_code.ato:Timer555
+    targets:
+      - designators
+      - netlist-kicad6
+      - bom-jlcpcb

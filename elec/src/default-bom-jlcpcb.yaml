@@ -1,0 +1,4 @@
+by-spec:
+- instance_of: template_code.ato:Timer555Dip8
+  footprint: lib:DIP-8_L9.7-W6.4-P2.54-LS7.6-BL
+  jlcpcb: C725327
