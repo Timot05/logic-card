@@ -7,6 +7,8 @@ import Capacitor from "std/capacitor.ato"
 
 # we can then import project specific components or modules
 # a module is a collection of components that are used together
+# you can also create components from jlc using the easyeday2ato command
+# for more information, see the ato documentation here: http://docs.atopile.io/#adding-footprints-to-your-project
 
 # if you cannot find a component you need, you can always define it yourself!
 component Timer555Dip8:
@@ -44,4 +46,6 @@ module HelloWorld:
     bypass_cap.p2 ~ gnd
 
 # thats it! run ato build from the src directory to generate the kicad netlist
+# help: http://docs.atopile.io/#building-the-netlist
 # if you have added new components, you may need to run ato resolve then fill in the jlcpcb part numbers in default-bom-jlcpcb.yaml
+# to get netlist into kicad, follow these steps: http://docs.atopile.io/#importing-to-kicad
