@@ -1,4 +1,4 @@
-# Atopile Project Template
+# atopile Project Template
 
 This project can be used as a starting template for an atopile project. This template provides the following aspects:
 
@@ -15,7 +15,7 @@ This project can be used as a starting template for an atopile project. This tem
 
 ## Documentation
 
-The documentaton for the project can be found at http://docs.atopile.io
+The documentation for the project can be found at http://docs.atopile.io
 
 ## Example projects
 
