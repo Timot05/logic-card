@@ -4,7 +4,7 @@ paths:
 builds:
   default:
     root-file: template_code.ato
-    root-node: template_code.ato:Timer555
+    root-node: template_code.ato:HelloWorld
     targets:
       - designators
       - netlist-kicad6
