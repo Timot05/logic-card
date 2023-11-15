@@ -1,0 +1,12 @@
+by-spec:
+- instance_of: template_code.ato:Timer555Dip8
+  footprint: lib:DIP-8_L9.7-W6.4-P2.54-LS7.6-BL
+  jlcpcb: C725327
+- instance_of: std/resistor.ato:Resistor
+  footprint: Resistor_SMD:R_0402_1005Metric
+  value: 10k
+  jlcpcb: C216802
+- instance_of: std/capacitor.ato:Capacitor
+  footprint: Capacitor_SMD:C_0402_1005Metric
+  value: 100nF
+  jlcpcb: C307331
