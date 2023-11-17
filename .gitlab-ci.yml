@@ -5,14 +5,14 @@ stages:
 
 check-ato:
   stage: check
-  image: registry.atopile.io/atopile/atopile-dev:latest
+  image: registry.atopile.io/atopile/atopile:latest
   script:
     - ato check elec/src
 
 build-gerbers-default:
   stage: build
   image:
-    name: kicad/kicad:nightly
+    name: kicad/kicad:7.0
     pull_policy: if-not-present
   script:
     - mkdir -p build/default/src
@@ -37,7 +37,7 @@ build-gerbers-default:
 
 build-ato-default:
   stage: build
-  image: registry.atopile.io/atopile/atopile-dev:latest
+  image: registry.atopile.io/atopile/atopile:latest
   script:
     - ato build elec/src
   artifacts:
