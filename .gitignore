@@ -30,3 +30,7 @@ fp-info-cache
 
 build/
 .DS_Store
+
+# Virtual environment
+.venv/
+venv/
