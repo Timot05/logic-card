@@ -3,11 +3,14 @@ stages:
   - build
   - store
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 check-ato:
   stage: check
   image: registry.atopile.io/atopile/atopile:latest
   script:
-    - ato check elec/src
+    - ato check --debug
 
 build-gerbers-default:
   stage: build
@@ -25,9 +28,9 @@ build-gerbers-default:
     - zip "gerbers-$CI_COMMIT_SHORT_SHA.zip" gerbers/*
 
     # position files need some massaging for JLCPCB
-    - kicad-cli pcb export pos --format csv --units mm --use-drill-file-origin -o servo-drive-pos.csv src/*.kicad_pcb
+    - kicad-cli pcb export pos --format csv --units mm --use-drill-file-origin -o $CI_COMMIT_SHORT_SHA-pos.csv src/*.kicad_pcb
     - POS_HEADER="$(cat ../../metadata/pos-header)"
-    - sed -i "1s/.*/$POS_HEADER/" servo-drive-pos.csv
+    - sed -i "1s/.*/$POS_HEADER/" $CI_COMMIT_SHORT_SHA-pos.csv
 
     # Export step file
     - kicad-cli pcb export step --subst-models -o board_3d_shape.step src/*.kicad_pcb
@@ -39,7 +42,7 @@ build-ato-default:
   stage: build
   image: registry.atopile.io/atopile/atopile:latest
   script:
-    - ato build elec/src
+    - ato build
   artifacts:
     paths:
       - build/
