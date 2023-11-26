@@ -1,3 +1,4 @@
+
 [submodule ".ato/modules/modules"]
 	path = .ato/modules/modules
-	url = https://gitlab.atopile.io/atopile/modules.git
+	url = https://gitlab.atopile.io/atopile/modules
