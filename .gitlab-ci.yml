@@ -10,7 +10,7 @@ check-ato:
   stage: check
   image: registry.atopile.io/atopile/atopile:latest
   script:
-    - ato check elec/src
+    - ato check --debug
 
 build-gerbers-default:
   stage: build
@@ -42,7 +42,7 @@ build-ato-default:
   stage: build
   image: registry.atopile.io/atopile/atopile:latest
   script:
-    - ato build elec/src
+    - ato build
   artifacts:
     paths:
       - build/
