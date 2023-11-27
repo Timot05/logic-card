@@ -8,7 +8,7 @@ variables:
 
 check-ato:
   stage: check
-  image: registry.atopile.io/atopile/atopile:latest
+  image: registry.atopile.io/atopile/atopile/ci:latest
   script:
     - ato check --debug
 
@@ -40,7 +40,7 @@ build-gerbers-default:
 
 build-ato-default:
   stage: build
-  image: registry.atopile.io/atopile/atopile:latest
+  image: registry.atopile.io/atopile/atopile/ci:latest
   script:
     - ato build
   artifacts:
