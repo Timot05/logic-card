@@ -1,4 +1,4 @@
 ato-version: ^0.0.22
 builds:
   default:
-    entry: elec/src/testing123.ato:Testing123
+    entry: elec/src/template123.ato:template123

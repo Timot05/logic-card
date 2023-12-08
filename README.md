@@ -1,3 +1,3 @@
-# testing123
+# template
 
 Project description goes here.
