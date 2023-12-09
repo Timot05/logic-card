@@ -181,7 +181,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "template123.kicad_pro",
+    "filename": "logic-card.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -215,7 +215,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "../../build/default/template123.net",
+      "netlist": "../../build/default/logic-card.net",
       "specctra_dsn": "",
       "step": "",
       "vrml": ""
