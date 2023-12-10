@@ -1,0 +1,62 @@
+component NoButton:
+    signal in
+    signal out
+
+# JLCPN: C318884
+component ButtonTS1187A from NoButton:
+    # component TS-1187A-B-A-B
+    # super standard button, basic part
+    # MPN: TS_1187A_B_A_B
+    footprint = "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL-2"
+    lcsc_id = "C318884"
+    # pins
+    in ~ pin 2; in ~ pin 1
+    out ~ pin 4; out ~ pin 3
+
+# MPN: SKRPACE010
+# JLC: C139797
+
+component ButtonSKRPACE010 from NoButton:
+    in ~ pin 1
+    in ~ pin 2
+    out ~ pin 3
+    out ~ pin 4
+    footprint = "KEY-SMD_4P-L4.2-W3.2-P2.20-LS4.6"
+
+# MPN: SKTDLDE010
+# JLC: C115365
+# easyeda2kicad --full --lcsc_id=C115365 --output ./lib/lib
+
+component Button90Degree from NoButton:
+    in ~ pin 1
+    out ~ pin 2
+
+    footprint = "lib:KEY-SMD_SKTDLDE010"
+
+import Resistor from "generics.ato"
+import Power from "generics.ato"
+
+component TS_1187A_B_A_B:
+    # component TS-1187A-B-A-B
+    # super standard button, basic part
+    # MPN: TS_1187A_B_A_B
+    footprint = "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL-2"
+    lcsc_id = "C318884"
+    # pins
+    signal input ~ pin p2
+    input ~ pin p1
+    signal output ~ pin p4
+    output ~ pin p3
+
+    # pin types
+
+module Button_Pullup:
+    btn = new ButtonTS1187A
+    signal output
+    power = new Power
+    pullup = new Resistor
+    pullup.value = "10k"
+    pullup.footprint = "Resistor_SMD:R_0402_1005Metric"
+
+    power.vcc ~ pullup.p1; pullup.p2 ~ btn.in; btn.out ~ power.gnd
+    output ~ btn.in

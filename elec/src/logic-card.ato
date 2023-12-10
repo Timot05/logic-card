@@ -1,2 +1,103 @@
+import CPG151101S03 from "CPG151101S03.ato"
+import RP2040_kit from "RP2040.ato"
+import LDOReg3V3 from "ldo_reg.ato"
+import Resistor from "generics.ato"
+import Power from "generics.ato"
+import BH_AAA_A1AJ024 from "BH-AAA-A1AJ024.ato"
+
+module SwitchPullUp:
+    power = new Power
+    signal out
+    switch = new CPG151101S03
+    r_pd = new Resistor
+    r_pd.value = "10k"
+    r_pd.footprint = "Resistor_SMD:R_0603_1608Metric"
+
+    power.vcc ~ r_pd.p1; r_pd.p2 ~ out
+    out ~ switch.in; switch.out ~ power.gnd
+
+component RGBLed:
+    # https://www.adafruit.com/product/848
+    signal r ~ pin 1
+    signal g ~ pin 2
+    signal vcc ~ pin 3
+    signal b ~ pin 4
+
+    # Pitch is 1.25. Hoping this 1.27 will work
+    footprint = "HDR-TH_4P-P1.27-V-M"
+
+module RGBLedKit:
+    signal r_sink
+    signal g_sink
+    signal vcc
+    signal b_sink
+
+    rr = new Resistor
+    rg = new Resistor
+    rb = new Resistor
+
+    led = new RGBLed
+
+    led.vcc ~ vcc
+    led.r ~ rr.p1; rr.p2 ~ r_sink
+    led.g ~ rg.p1; rg.p2 ~ g_sink
+    led.b ~ rb.p1; rb.p2 ~ b_sink
+
+    rg.value = "100"
+    rb.value = "100"
+    rr.value = "1.5K"
+
+component PinHeader8:
+    # KH_127PH180_1X8P_L72
+    footprint = "HDR-TH_8P-P1.27-V-M"
+    lcsc_id = "C2938403"
+
+    pin 1 ~ signal in
+    pin 2 ~ signal wire
+    pin 3 ~ signal not
+    pin 4 ~ signal or
+    pin 5 ~ signal and
+    pin 6 ~ signal xor
+    pin 7 ~ signal latch
+    pin 8 ~ signal out
+
+
 module LogicCard:
-    # start here!
+    # Power stuff
+    ldo = new LDOReg3V3
+    aaa = new BH_AAA_A1AJ024
+
+    aaa.minus ~ ldo.power_in.gnd
+
+    # The selector will close the circuit and turn on the device
+    selector = new PinHeader8
+    aaa.plus ~ selector.in; selector.out ~ ldo.power_in.vcc
+
+    # A micro
+    micro = new RP2040_kit
+    ldo.power_out ~ micro.power
+
+    # Two switches for the gate
+    switch_1 = new SwitchPullUp
+    switch_2 = new SwitchPullUp
+
+    switch_1.out ~ micro.micro.gpio13
+    switch_2.out ~ micro.micro.gpio14
+
+    # Connecting the micro to the plates
+    micro.micro.gpio1 ~ selector.wire
+    micro.micro.gpio2 ~ selector.not
+    micro.micro.gpio3 ~ selector.or
+    micro.micro.gpio4 ~ selector.and
+    micro.micro.gpio5 ~ selector.xor
+    micro.micro.gpio6 ~ selector.latch
+
+    # Mechanical support on the other side
+    opposite_support = new PinHeader8
+
+    # Lastly, an LED
+    led_kit = new RGBLedKit
+    led_kit.vcc ~ ldo.power_out.vcc
+    micro.micro.gpio13 ~ led_kit.r_sink
+    micro.micro.gpio14 ~ led_kit.g_sink
+    micro.micro.gpio15 ~ led_kit.b_sink

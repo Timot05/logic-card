@@ -1,0 +1,254 @@
+
+import Resistor from "generics.ato"
+import Capacitor from "generics.ato"
+
+import USB2 from "generics.ato"
+import I2C from "generics.ato"
+import Power from "generics.ato"
+import OSCILLATOR_INTERFACE from "generics.ato"
+import QSPI from "generics.ato"
+import SPI from "generics.ato"
+
+import Button_Pullup from "button.ato"
+import ButtonTS1187A from "button.ato"
+import Oscillator_12MHz from "oscillator.ato"
+import W25Q128JVEIQ from "W25Q128JVEIQ.ato"
+import Vdiv from "vdiv.ato"
+
+component RP2040:
+    signal iovdd ~ pin 1
+    iovdd ~ pin 10
+    iovdd ~ pin 22
+    iovdd ~ pin 33
+    iovdd ~ pin 42
+    iovdd ~ pin 49
+
+    signal usb_vdd ~ pin 48
+    signal dvdd ~ pin 23
+    dvdd ~ pin 50
+
+    signal testen ~ pin 19
+
+    signal xin ~ pin 20
+    signal xout ~ pin 21
+
+    signal swclk ~ pin 24
+    signal swdio ~ pin 25
+
+    signal run ~ pin 26
+
+    signal adc_avdd ~ pin 43
+
+    signal vreg_vin ~ pin 44
+    signal vreg_vout ~ pin 45
+
+    signal usb_dm ~ pin 46
+    signal usb_dp ~ pin 47
+
+    signal qspi_sd3 ~ pin 51
+    signal qspi_sclk ~ pin 52
+    signal qspi_sd0 ~ pin 53
+    signal qspi_sd2 ~ pin 54
+    signal qspi_sd1 ~ pin 55
+    signal qspi_ss_n ~ pin 56
+
+    signal gpio0 ~ pin 2
+    signal gpio1 ~ pin 3
+    signal gpio2 ~ pin 4
+    signal gpio3 ~ pin 5
+    signal gpio4 ~ pin 6
+    signal gpio5 ~ pin 7
+    signal gpio6 ~ pin 8
+    signal gpio7 ~ pin 9
+    signal gpio8 ~ pin 11
+    signal gpio9 ~ pin 12
+    signal gpio10 ~ pin 13
+    signal gpio11 ~ pin 14
+    signal gpio12 ~ pin 15
+    signal gpio13 ~ pin 16
+    signal gpio14 ~ pin 17
+    signal gpio15 ~ pin 18
+    signal gpio16 ~ pin 27
+    signal gpio17 ~ pin 28
+    signal gpio18 ~ pin 29
+    signal gpio19 ~ pin 30
+    signal gpio20 ~ pin 31
+    signal gpio21 ~ pin 32
+    signal gpio22 ~ pin 34
+    signal gpio23 ~ pin 35
+    signal gpio24 ~ pin 36
+    signal gpio25 ~ pin 37
+    signal gpio26_a0 ~ pin 38
+    signal gpio27_a1 ~ pin 39
+    signal gpio28_a2 ~ pin 40
+    signal gpio29_a3 ~ pin 41
+
+    signal gnd ~ pin 57
+    gnd ~ testen
+
+    signal vcc ~ usb_vdd
+    vcc ~ adc_avdd
+    vcc ~ vreg_vin
+
+    # connect 1V reg to dvdd
+    vreg_vout ~ dvdd
+
+    footprint = "lib:LQFN-56_L7.0-W7.0-P0.4-EP"
+
+    designator_prefix = "U"
+
+component bypass_cap_100nF from Capacitor:
+    value = "100nF"
+    footprint = "Capacitor_SMD:C_0402_1005Metric"
+    power = new Power
+    power.vcc ~ p1
+    power.gnd ~ p2
+
+component bypass_cap_1uF from Capacitor:
+    value = "1uF"
+    footprint = "Capacitor_SMD:C_0402_1005Metric"
+    power = new Power
+    power.vcc ~ p1
+    power.gnd ~ p2
+
+module RP2040_kit:
+    # Microcontroller
+    micro = new RP2040
+
+    power = new Power
+    power.vcc ~ micro.vcc
+    power.gnd ~ micro.gnd
+
+    power_1V = new Power
+    power_1V.vcc ~ micro.dvdd
+    power_1V.gnd ~ micro.gnd
+
+    i2c = new I2C
+    i2c.sda ~ micro.gpio20
+    i2c.scl ~ micro.gpio21
+
+    osc_interface = new OSCILLATOR_INTERFACE
+    osc_interface.input ~ micro.xin
+    osc_interface.output ~ micro.xout
+    osc_interface.gnd ~ micro.gnd
+
+    osc = new Oscillator_12MHz
+    osc_interface ~ osc.osc_interface
+
+    # SPI interface
+    spi = new SPI
+    spi.cs ~ micro.gpio9
+    spi.mosi ~ micro.gpio11
+    spi.miso ~ micro.gpio8
+    spi.sck ~ micro.gpio10
+
+    # QSPI interface
+    qspi = new QSPI
+    qspi.cs ~ micro.qspi_ss_n
+    qspi.sck ~ micro.qspi_sclk
+    qspi.io0 ~ micro.qspi_sd0
+    qspi.io1 ~ micro.qspi_sd1
+    qspi.io2 ~ micro.qspi_sd2
+    qspi.io3 ~ micro.qspi_sd3
+    qspi.gnd ~ micro.gnd
+
+    # Flash
+    flash = new W25Q128JVEIQ
+    power ~ flash.power
+    qspi ~ flash.qspi
+
+    # usb
+    usb = new USB2
+    r_usb_d_plus = new Resistor
+    r_usb_d_plus.value = "27R"
+    r_usb_d_plus.footprint = "Resistor_SMD:R_0402_1005Metric"
+
+    r_usb_d_minus = new Resistor
+    r_usb_d_minus.value = "27R"
+    r_usb_d_minus.footprint = "Resistor_SMD:R_0402_1005Metric"
+
+    # Connect series resistors to usb
+    usb.dp ~ r_usb_d_plus.p2; r_usb_d_plus.p1 ~ micro.usb_dp
+    usb.dm ~ r_usb_d_minus.p1; r_usb_d_minus.p2 ~ micro.usb_dm
+
+    # Bypass capacitors 100nF - 3V3
+    bypass_cap_100nF_1 = new bypass_cap_100nF
+    bypass_cap_100nF_2 = new bypass_cap_100nF
+    bypass_cap_100nF_3 = new bypass_cap_100nF
+    bypass_cap_100nF_4 = new bypass_cap_100nF
+    bypass_cap_100nF_5 = new bypass_cap_100nF
+
+    power ~ bypass_cap_100nF_1.power
+    power ~ bypass_cap_100nF_2.power
+    power ~ bypass_cap_100nF_3.power
+    power ~ bypass_cap_100nF_4.power
+    power ~ bypass_cap_100nF_5.power
+
+    # Bypass capacitors 1uF - 3V3
+    bypass_cap_1uF = new bypass_cap_1uF
+    power ~ bypass_cap_1uF.power
+
+    # Bypass capacitors 100nF - 1V
+    bypass_cap_100nF_6 = new bypass_cap_100nF
+    bypass_cap_100nF_7 = new bypass_cap_100nF
+    bypass_cap_100nF_8 = new bypass_cap_100nF
+
+    power_1V ~ bypass_cap_100nF_6.power
+    power_1V ~ bypass_cap_100nF_7.power
+    power_1V ~ bypass_cap_100nF_8.power
+
+    # Bypass capacitors 1uF - 1V
+    bypass_cap_1uF_1 = new bypass_cap_1uF
+    power_1V ~ bypass_cap_1uF_1.power
+
+    # # Reset
+    reset_btn = new Button_Pullup 
+    reset_btn.btn -> ButtonTS1187A
+    reset_btn.power ~ power
+    reset_btn.output ~ micro.run
+
+    # Boot
+    boot_btn = new Button_Pullup 
+    boot_btn.btn -> ButtonTS1187A
+    boot_btn.power ~ power
+    boot_btn.output ~ micro.qspi_ss_n
+    boot_btn.pullup.value = "10k"
+
+    # pulldown resistor
+    r_boot_pulldown = new Resistor
+    r_boot_pulldown.value = "1k"
+    r_boot_pulldown.footprint = "Resistor_SMD:R_0402_1005Metric"
+    micro.qspi_ss_n ~ r_boot_pulldown.p1; r_boot_pulldown.p2 ~ micro.gnd
+
+
+    # make all gpio pins available at the top level
+    signal gpio0 ~ micro.gpio0
+    signal gpio1 ~ micro.gpio1
+    signal gpio2 ~ micro.gpio2
+    signal gpio3 ~ micro.gpio3
+    signal gpio4 ~ micro.gpio4
+    signal gpio5 ~ micro.gpio5
+    signal gpio6 ~ micro.gpio6
+    signal gpio7 ~ micro.gpio7
+    signal gpio8 ~ micro.gpio8
+    signal gpio9 ~ micro.gpio9
+    signal gpio10 ~ micro.gpio10
+    signal gpio11 ~ micro.gpio11
+    signal gpio12 ~ micro.gpio12
+    signal gpio13 ~ micro.gpio13
+    signal gpio14 ~ micro.gpio14
+    signal gpio15 ~ micro.gpio15
+    signal gpio16 ~ micro.gpio16
+    signal gpio17 ~ micro.gpio17
+    signal gpio18 ~ micro.gpio18
+    signal gpio19 ~ micro.gpio19
+    signal gpio20 ~ micro.gpio20
+    signal gpio21 ~ micro.gpio21
+    signal gpio22 ~ micro.gpio22
+    signal gpio23 ~ micro.gpio23
+    signal gpio24 ~ micro.gpio24
+    signal gpio25 ~ micro.gpio25
+    signal gpio26_a0 ~ micro.gpio26_a0
+    signal gpio27_a1 ~ micro.gpio27_a1
+    signal gpio28_a2 ~ micro.gpio28_a2
+    signal gpio29_a3 ~ micro.gpio29_a3

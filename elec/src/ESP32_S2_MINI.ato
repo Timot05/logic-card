@@ -1,0 +1,153 @@
+# JLC PN C3013906
+import Power from "generics.ato"
+import I2C from "generics.ato"
+import SPI from "generics.ato"
+import UART from "generics.ato"
+import JTAG from "generics.ato"
+import USB2 from "generics.ato"
+import Resistor from "generics.ato"
+import Capacitor from "generics.ato"
+import NoButton from "button.ato"
+import ButtonTS1187A from "button.ato"
+
+component ESP32_S2_MINI_2_N4:
+    footprint = "WIFI-SMD_ESP32-MINI-1-N4"
+    signal gnd ~ pin 1
+    gnd ~ pin 2
+    gnd ~ pin 30
+    gnd ~ pin 42
+    gnd ~ pin 43
+    gnd ~ pin 46
+    gnd ~ pin 47
+    gnd ~ pin 48
+    gnd ~ pin 49
+    gnd ~ pin 50
+    gnd ~ pin 51
+    gnd ~ pin 52
+    gnd ~ pin 53
+    gnd ~ pin 54
+    gnd ~ pin 55
+    gnd ~ pin 56
+    gnd ~ pin 57
+    gnd ~ pin 58
+    gnd ~ pin 59
+    gnd ~ pin 60
+    gnd ~ pin 61
+    gnd ~ pin 62
+    gnd ~ pin 63
+    gnd ~ pin 64
+    gnd ~ pin 65
+    signal vcc ~ pin 3
+    signal io0 ~ pin 4
+    signal io1 ~ pin 5
+    signal io2 ~ pin 6
+    signal io3 ~ pin 7
+    signal io4 ~ pin 8
+    signal io5 ~ pin 9
+    signal io6 ~ pin 10
+    signal io7 ~ pin 11
+    signal io8 ~ pin 12
+    signal io9 ~ pin 13
+    signal io10 ~ pin 14
+    signal io11 ~ pin 15
+    signal io12 ~ pin 16
+    signal io13 ~ pin 17
+    signal io14 ~ pin 18
+    signal io15 ~ pin 19
+    signal io16 ~ pin 20
+    signal io17 ~ pin 21
+    signal io18 ~ pin 22
+    signal io19 ~ pin 23
+    signal io20 ~ pin 24
+    signal io21 ~ pin 25
+    signal io26 ~ pin 26
+    signal io33 ~ pin 28
+    signal io34 ~ pin 29
+    signal io35 ~ pin 31
+    signal io36 ~ pin 32
+    signal io37 ~ pin 33
+    signal io38 ~ pin 34
+    signal io39 ~ pin 35
+    signal io40 ~ pin 36
+    signal io41 ~ pin 37
+    signal io42 ~ pin 38
+    signal txd0 ~ pin 39
+    signal rxd0 ~ pin 40
+    signal io45 ~ pin 41
+    signal io46 ~ pin 44
+    signal en ~ pin 45
+
+
+module ESP32_S2_MINI_2_N4_kit:
+    micro = new ESP32_S2_MINI_2_N4
+    power = new Power
+    power.vcc ~ micro.vcc
+    power.gnd ~ micro.gnd
+
+    # Input decoupling capacitors
+    c1 = new Capacitor
+    c1.p1 ~ power.vcc
+    c1.p2 ~ power.gnd
+    c1.value = "0.1uF"
+    c1.footprint = "Capacitor_SMD:C_0402_1005Metric"
+
+    c2 = new Capacitor
+    c2.p1 ~ power.vcc
+    c2.p2 ~ power.gnd
+    c2.value = "22uF"
+    c2.footprint = "Capacitor_SMD:C_0805_2012Metric"
+
+    # USB2 interface connections
+    usb = new USB2
+    usb.dm ~ micro.io19
+    usb.dp ~ micro.io20
+    usb.gnd ~ power.gnd
+
+    # I2C interface - using GPIO 33 and GPIO 34
+    i2c = new I2C
+    i2c.scl ~ micro.io8
+    i2c.sda ~ micro.io9
+    # I2C pull-up resistors (typically 4.7k to 10k Ohms)
+    r_i2c_sda = new Resistor
+    r_i2c_sda.p1 ~ i2c.sda
+    r_i2c_sda.p2 ~ power.vcc
+    r_i2c_sda.value = "10K"
+    r_i2c_sda.footprint = "Resistor_SMD:R_0402_1005Metric"
+
+    r_i2c_scl = new Resistor
+    r_i2c_scl.p1 ~ i2c.scl
+    r_i2c_scl.p2 ~ power.vcc
+    r_i2c_scl.value = "10K"
+    r_i2c_scl.footprint = "Resistor_SMD:R_0402_1005Metric"
+
+    # JTAG interface - assigning typical JTAG pins
+    jtag = new JTAG
+    jtag.tms ~ micro.io42
+    jtag.tck ~ micro.io39
+    jtag.tdi ~ micro.io41
+    jtag.tdo ~ micro.io40
+    jtag.gnd ~ power.gnd
+
+    # SPI interface - assigning typical SPI pins
+    spi = new SPI
+    spi.mosi ~ micro.io35
+    spi.miso ~ micro.io37
+    spi.sck ~ micro.io36
+    spi.cs ~ micro.io34
+
+    # UART interface - using the default UART0 pins
+    uart = new UART
+    uart.tx ~ micro.txd0
+    uart.rx ~ micro.rxd0
+
+    # boot button
+    boot_button = new NoButton
+    boot_button -> ButtonTS1187A
+    boot_button.in ~ micro.io0
+    boot_button.out ~ power.gnd
+
+    # reset button
+    reset_button = new NoButton
+    reset_button -> ButtonTS1187A
+    reset_button.in ~ micro.en
+    reset_button.out ~ power.gnd

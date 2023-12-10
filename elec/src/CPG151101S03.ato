@@ -1,0 +1,7 @@
+component CPG151101S03:
+    footprint = "KEY-TH_CPG1511F01S0X"
+    lcsc_id = "C404350"
+    # pins
+    signal in ~ pin 1
+    signal out ~ pin 2
+

@@ -215,7 +215,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "../../build/default/logic-card.net",
+      "netlist": "../../build/logic-card.net",
       "specctra_dsn": "",
       "step": "",
       "vrml": ""
