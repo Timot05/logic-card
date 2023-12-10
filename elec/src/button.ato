@@ -3,15 +3,15 @@ component NoButton:
     signal out
 
 # JLCPN: C318884
-component ButtonTS1187A from NoButton:
+component ButtonTS1187A:
     # component TS-1187A-B-A-B
     # super standard button, basic part
     # MPN: TS_1187A_B_A_B
     footprint = "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL-2"
     lcsc_id = "C318884"
     # pins
-    in ~ pin 2; in ~ pin 1
-    out ~ pin 4; out ~ pin 3
+    signal p1 ~ pin 2; p1 ~ pin 1
+    signal p2 ~ pin 4; p2 ~ pin 3
 
 # MPN: SKRPACE010
 # JLC: C139797

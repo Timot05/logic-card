@@ -1,14 +1,21 @@
 import CPG151101S03 from "CPG151101S03.ato"
-import RP2040_kit from "RP2040.ato"
+import RP2040Kit from "rp2040/RP2040Kit.ato"
 import LDOReg3V3 from "ldo_reg.ato"
 import Resistor from "generics.ato"
 import Power from "generics.ato"
+# battery holder
 import BH_AAA_A1AJ024 from "BH-AAA-A1AJ024.ato"
+# switch
+import B3F_4005_C397283 from "B3F-4005_C397283.ato"
+# mosfet
+import _2N7002KW_R1_00001 from "2N7002KW_R1_00001.ato"
+
+import ButtonTS1187A from "button.ato"
 
 module SwitchPullUp:
     power = new Power
     signal out
-    switch = new CPG151101S03
+    switch = new B3F_4005_C397283
     r_pd = new Resistor
     r_pd.value = "10k"
     r_pd.footprint = "Resistor_SMD:R_0603_1608Metric"
@@ -65,6 +72,19 @@ component PinHeader8:
     pin 7 ~ signal latch
     pin 8 ~ signal out
 
+module _ButtonPullup:
+    btn = new ButtonTS1187A
+
+    signal output
+    power = new Power
+
+    pullup = new Resistor
+    pullup.value = "10k"
+    pullup.footprint = "Resistor_SMD:R_0402_1005Metric"
+
+    power.vcc ~ pullup.p1; pullup.p2 ~ btn.p1; btn.p2 ~ power.gnd
+    output ~ pullup.p2
+
 
 module LogicCard:
     # Power stuff
@@ -78,14 +98,22 @@ module LogicCard:
     aaa.plus ~ selector.in; selector.out ~ ldo.power_in.vcc
 
     # A micro
-    micro = new RP2040_kit
+    micro = new RP2040Kit
+    # Huge hack until we fix the replacement operator
+    reset_btn = new _ButtonPullup
+    boot_btn = new _ButtonPullup
+    ldo.power_out ~ reset_btn.power
+    ldo.power_out ~ boot_btn.power
+    reset_btn.output ~ micro.micro.run
+    boot_btn.output ~ micro.micro.qspi_ss_n
+
     ldo.power_out ~ micro.power
 
     # Two switches for the gate
     switch_1 = new SwitchPullUp
     switch_2 = new SwitchPullUp
 
-    switch_1.out ~ micro.micro.gpio13
+    switch_1.out ~ micro.micro.gpio0
     switch_2.out ~ micro.micro.gpio14
 
     # Connecting the micro to the plates
@@ -101,7 +129,20 @@ module LogicCard:
 
     # Lastly, an LED
     led_kit = new RGBLedKit
+    r_mosfet = new _2N7002KW_R1_00001
+    g_mosfet = new _2N7002KW_R1_00001
+    b_mosfet = new _2N7002KW_R1_00001
+
+    led_kit.r_sink ~ r_mosfet.drain
+    led_kit.g_sink ~ g_mosfet.drain
+    led_kit.b_sink ~ b_mosfet.drain
+
     led_kit.vcc ~ ldo.power_out.vcc
-    micro.micro.gpio13 ~ led_kit.r_sink
-    micro.micro.gpio14 ~ led_kit.g_sink
-    micro.micro.gpio15 ~ led_kit.b_sink
+
+    micro.micro.gpio22 ~ r_mosfet.gate
+    micro.micro.gpio23 ~ g_mosfet.gate
+    micro.micro.gpio24 ~ b_mosfet.gate
+
+    r_mosfet.source ~ ldo.power_out.gnd
+    g_mosfet.source ~ ldo.power_out.gnd
+    b_mosfet.source ~ ldo.power_out.gnd
