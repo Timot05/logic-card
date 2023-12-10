@@ -24,7 +24,7 @@ component RGBLed:
     signal b ~ pin 4
 
     # Pitch is 1.25. Hoping this 1.27 will work
-    footprint = "HDR-TH_4P-P1.27-V-M"
+    footprint = "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical"
 
 module RGBLedKit:
     signal r_sink
@@ -46,6 +46,10 @@ module RGBLedKit:
     rg.value = "100"
     rb.value = "100"
     rr.value = "1.5K"
+
+    rg.footprint = "Resistor_SMD:R_0603_1608Metric"
+    rb.footprint = "Resistor_SMD:R_0603_1608Metric"
+    rr.footprint = "Resistor_SMD:R_0603_1608Metric"
 
 component PinHeader8:
     # KH_127PH180_1X8P_L72
