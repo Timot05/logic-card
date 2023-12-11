@@ -8,7 +8,7 @@ component ButtonTS1187A:
     # super standard button, basic part
     # MPN: TS_1187A_B_A_B
     footprint = "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL-2"
-    lcsc_id = "C318884"
+    mpn = "C318884"
     # pins
     signal p1 ~ pin 2; p1 ~ pin 1
     signal p2 ~ pin 4; p2 ~ pin 3
@@ -33,8 +33,8 @@ component Button90Degree from NoButton:
 
     footprint = "lib:KEY-SMD_SKTDLDE010"
 
-import Resistor from "generics.ato"
-import Power from "generics.ato"
+import Resistor from "generics/resistor.ato"
+import Power from "generics/interfaces.ato"
 
 component TS_1187A_B_A_B:
     # component TS-1187A-B-A-B

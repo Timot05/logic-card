@@ -2,11 +2,12 @@
 # easyeda2kicad --full --lcsc_id=C443854 --output ./lib/lib
 # ato view --root-file adjustable_ldo.ato --root-node adjustable_ldo.ato:adjustable_ldo
 
-import Capacitor from "generics.ato"
-import Vdiv from "vdiv.ato"
-import Power from "generics.ato"
+import Capacitor from "generics/capacitor.ato"
+import Vdiv from "generics.ato"
+import Power from "generics/interfaces.ato"
 
 component LDK220M_R:
+    mpn = "C443854"
     signal in ~ pin 1
     signal gnd ~ pin 2
     signal en ~ pin 3

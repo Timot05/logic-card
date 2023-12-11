@@ -1,8 +1,8 @@
 import CPG151101S03 from "CPG151101S03.ato"
 import RP2040Kit from "rp2040/RP2040Kit.ato"
 import LDOReg3V3 from "ldo_reg.ato"
-import Resistor from "generics.ato"
-import Power from "generics.ato"
+import Resistor from "generics/resistor.ato"
+import Power from "generics/interfaces.ato"
 # battery holder
 import BH_AAA_A1AJ024 from "BH-AAA-A1AJ024.ato"
 # switch
@@ -11,6 +11,8 @@ import B3F_4005_C397283 from "B3F-4005_C397283.ato"
 import _2N7002KW_R1_00001 from "2N7002KW_R1_00001.ato"
 
 import ButtonTS1187A from "button.ato"
+# Diode
+import _1N4148W_T4 from "1N4148WT4.ato"
 
 module SwitchPullUp:
     power = new Power
@@ -61,7 +63,7 @@ module RGBLedKit:
 component PinHeader8:
     # KH_127PH180_1X8P_L72
     footprint = "HDR-TH_8P-P1.27-V-M"
-    lcsc_id = "C2938403"
+    mpn = "C2938403"
 
     pin 1 ~ signal in
     pin 2 ~ signal wire
@@ -95,10 +97,14 @@ module LogicCard:
 
     # The selector will close the circuit and turn on the device
     selector = new PinHeader8
-    aaa.plus ~ selector.in; selector.out ~ ldo.power_in.vcc
+    aaa_diode = new _1N4148W_T4
+    aaa.plus ~ selector.in; selector.out ~ aaa_diode.A; aaa_diode.K ~ ldo.power_in.vcc
 
     # A micro
     micro = new RP2040Kit
+    usb_diode = new _1N4148W_T4
+    micro.usb_conn.power.vcc ~ usb_diode.A; usb_diode.K ~ ldo.power_in.vcc
+    micro.usb_conn.power.gnd ~ ldo.power_in.gnd
     # Huge hack until we fix the replacement operator
     reset_btn = new _ButtonPullup
     boot_btn = new _ButtonPullup
@@ -116,6 +122,9 @@ module LogicCard:
     switch_1.out ~ micro.micro.gpio0
     switch_2.out ~ micro.micro.gpio14
 
+    switch_1.power ~ ldo.power_out
+    switch_2.power ~ ldo.power_out
+
     # Connecting the micro to the plates
     micro.micro.gpio1 ~ selector.wire
     micro.micro.gpio2 ~ selector.not
@@ -123,6 +132,31 @@ module LogicCard:
     micro.micro.gpio4 ~ selector.and
     micro.micro.gpio5 ~ selector.xor
     micro.micro.gpio6 ~ selector.latch
+
+    rwire = new Resistor
+    rwire.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rwire.value = "10k"
+    selector.wire ~ rwire.p2; rwire.p1 ~ ldo.power_out.vcc
+    rnot = new Resistor
+    rnot.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rnot.value = "10k"
+    selector.not ~ rnot.p2; rnot.p1 ~ ldo.power_out.vcc
+    ror = new Resistor
+    ror.footprint = "Resistor_SMD:R_0402_1005Metric"
+    ror.value = "10k"
+    selector.or ~ ror.p2; ror.p1 ~ ldo.power_out.vcc
+    rand = new Resistor
+    rand.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rand.value = "10k"
+    selector.and ~ rand.p2; rand.p1 ~ ldo.power_out.vcc
+    rxor = new Resistor
+    rxor.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rxor.value = "10k"
+    selector.xor ~ rxor.p2; rxor.p1 ~ ldo.power_out.vcc
+    rlatch = new Resistor
+    rlatch.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rlatch.value = "10k"
+    selector.latch ~ rlatch.p2; rlatch.p1 ~ ldo.power_out.vcc
 
     # Mechanical support on the other side
     opposite_support = new PinHeader8
