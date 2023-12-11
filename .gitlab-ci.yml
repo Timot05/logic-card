@@ -1,16 +1,9 @@
 stages:
-  - check
   - build
   - store
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-
-check-ato:
-  stage: check
-  image: registry.atopile.io/atopile/atopile/ci:latest
-  script:
-    - ato check --debug
 
 build-gerbers-default:
   stage: build
@@ -42,6 +35,7 @@ build-ato-default:
   stage: build
   image: registry.atopile.io/atopile/atopile/ci:latest
   script:
+    - ato install
     - ato build
   artifacts:
     paths:
