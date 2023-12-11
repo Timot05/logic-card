@@ -60,10 +60,10 @@ module RGBLedKit:
     rb.footprint = "Resistor_SMD:R_0603_1608Metric"
     rr.footprint = "Resistor_SMD:R_0603_1608Metric"
 
-component PinHeader8:
+component PinHeader14Female:
     # KH_127PH180_1X8P_L72
-    footprint = "HDR-TH_8P-P1.27-V-M"
-    mpn = "C2938403"
+    footprint = "PinHeader_1x14_P2.54mm_Vertical"
+    mpn = "-"
 
     pin 1 ~ signal in
     pin 2 ~ signal wire
@@ -74,7 +74,35 @@ component PinHeader8:
     pin 7 ~ signal latch
     pin 8 ~ signal out
 
-module _ButtonPullup:
+# Those are the receptacle
+component PM200V_11_08_H43:
+    footprint = "HDR-TH_8P-P2.00-V-F"
+    lcsc_id = "C2925555"
+    # pins
+    signal in ~ pin 1
+    signal wire ~ pin 2
+    signal not ~ pin 3
+    signal or ~ pin 4
+    signal and ~ pin 5
+    signal xor ~ pin 6
+    signal latch ~ pin 7
+    signal out ~ pin 8
+
+# Those are the pins
+component PZ200_1_08_Z:
+    footprint = "HDR-TH_8P-P2.00-V-M"
+    lcsc_id = "C2905954"
+    # pins
+    signal in ~ pin 1
+    signal wire ~ pin 2
+    signal not ~ pin 3
+    signal or ~ pin 4
+    signal and ~ pin 5
+    signal xor ~ pin 6
+    signal latch ~ pin 7
+    signal out ~ pin 8
+
+module ButtonPullup:
     btn = new ButtonTS1187A
 
     signal output
@@ -96,7 +124,7 @@ module LogicCard:
     aaa.minus ~ ldo.power_in.gnd
 
     # The selector will close the circuit and turn on the device
-    selector = new PinHeader8
+    selector = new PZ200_1_08_Z
     aaa_diode = new _1N4148W_T4
     aaa.plus ~ selector.in; selector.out ~ aaa_diode.A; aaa_diode.K ~ ldo.power_in.vcc
 
@@ -105,13 +133,9 @@ module LogicCard:
     usb_diode = new _1N4148W_T4
     micro.usb_conn.power.vcc ~ usb_diode.A; usb_diode.K ~ ldo.power_in.vcc
     micro.usb_conn.power.gnd ~ ldo.power_in.gnd
-    # Huge hack until we fix the replacement operator
-    reset_btn = new _ButtonPullup
-    boot_btn = new _ButtonPullup
-    ldo.power_out ~ reset_btn.power
-    ldo.power_out ~ boot_btn.power
-    reset_btn.output ~ micro.micro.run
-    boot_btn.output ~ micro.micro.qspi_ss_n
+
+    micro.reset_btn -> ButtonPullup
+    micro.boot_btn -> ButtonPullup
 
     ldo.power_out ~ micro.power
 
@@ -159,7 +183,7 @@ module LogicCard:
     selector.latch ~ rlatch.p2; rlatch.p1 ~ ldo.power_out.vcc
 
     # Mechanical support on the other side
-    opposite_support = new PinHeader8
+    opposite_support = new PZ200_1_08_Z
 
     # Lastly, an LED
     led_kit = new RGBLedKit

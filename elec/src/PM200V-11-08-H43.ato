@@ -1,0 +1,14 @@
+component PM200V_11_08_H43:
+    footprint = "HDR-TH_8P-P2.00-V-F"
+    lcsc_id = "C2925555"
+    # pins
+    signal _1 ~ pin p1
+    signal _2 ~ pin p2
+    signal _3 ~ pin p3
+    signal _4 ~ pin p4
+    signal _5 ~ pin p5
+    signal _6 ~ pin p6
+    signal _7 ~ pin p7
+    signal _8 ~ pin p8
+
+    # pin types
