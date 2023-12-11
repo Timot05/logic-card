@@ -35,6 +35,8 @@ component RGBLed:
     # Pitch is 1.25. Hoping this 1.27 will work
     footprint = "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical"
 
+    mpn = "dnp"
+
 module RGBLedKit:
     signal r_sink
     signal g_sink
@@ -77,7 +79,7 @@ component PinHeader14Female:
 # Those are the receptacle
 component PM200V_11_08_H43:
     footprint = "HDR-TH_8P-P2.00-V-F"
-    lcsc_id = "C2925555"
+    mpn = "C2925555"
     # pins
     signal in ~ pin 1
     signal wire ~ pin 2
@@ -91,7 +93,7 @@ component PM200V_11_08_H43:
 # Those are the pins
 component PZ200_1_08_Z:
     footprint = "HDR-TH_8P-P2.00-V-M"
-    lcsc_id = "C2905954"
+    mpn = "C2905954"
     # pins
     signal in ~ pin 1
     signal wire ~ pin 2
