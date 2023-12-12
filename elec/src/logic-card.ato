@@ -1,5 +1,6 @@
 import CPG151101S03 from "CPG151101S03.ato"
 import RP2040Kit from "rp2040/RP2040Kit.ato"
+import USBCConn from "usb-connectors/usb-connectors.ato"
 import LDOReg3V3 from "ldo_reg.ato"
 import Resistor from "generics/resistor.ato"
 import Power from "generics/interfaces.ato"
@@ -20,7 +21,7 @@ module SwitchPullUp:
     switch = new B3F_4005_C397283
     r_pd = new Resistor
     r_pd.value = "10k"
-    r_pd.footprint = "Resistor_SMD:R_0603_1608Metric"
+    r_pd.footprint = "C0603"
 
     power.vcc ~ r_pd.p1; r_pd.p2 ~ out
     out ~ switch.in; switch.out ~ power.gnd
@@ -58,9 +59,9 @@ module RGBLedKit:
     rb.value = "100"
     rr.value = "1.5K"
 
-    rg.footprint = "Resistor_SMD:R_0603_1608Metric"
-    rb.footprint = "Resistor_SMD:R_0603_1608Metric"
-    rr.footprint = "Resistor_SMD:R_0603_1608Metric"
+    rg.footprint = "R0603"
+    rb.footprint = "R0603"
+    rr.footprint = "R0603"
 
 component PinHeader14Female:
     # KH_127PH180_1X8P_L72
@@ -112,7 +113,7 @@ module ButtonPullup:
 
     pullup = new Resistor
     pullup.value = "10k"
-    pullup.footprint = "Resistor_SMD:R_0402_1005Metric"
+    pullup.footprint = "R0402"
 
     power.vcc ~ pullup.p1; pullup.p2 ~ btn.p1; btn.p2 ~ power.gnd
     output ~ pullup.p2
@@ -132,9 +133,12 @@ module LogicCard:
 
     # A micro
     micro = new RP2040Kit
+    usb_c = new USBCConn
     usb_diode = new _1N4148W_T4
-    micro.usb_conn.power.vcc ~ usb_diode.A; usb_diode.K ~ ldo.power_in.vcc
-    micro.usb_conn.power.gnd ~ ldo.power_in.gnd
+    usb_c.power.vcc ~ usb_diode.A; usb_diode.K ~ ldo.power_in.vcc
+    usb_c.power.gnd ~ ldo.power_in.gnd
+
+    usb_c.usb2 ~ micro.usb_if
 
     micro.reset_btn -> ButtonPullup
     micro.boot_btn -> ButtonPullup
@@ -160,27 +164,27 @@ module LogicCard:
     micro.micro.gpio6 ~ selector.latch
 
     rwire = new Resistor
-    rwire.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rwire.footprint = "R0402"
     rwire.value = "10k"
     selector.wire ~ rwire.p2; rwire.p1 ~ ldo.power_out.vcc
     rnot = new Resistor
-    rnot.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rnot.footprint = "R0402"
     rnot.value = "10k"
     selector.not ~ rnot.p2; rnot.p1 ~ ldo.power_out.vcc
     ror = new Resistor
-    ror.footprint = "Resistor_SMD:R_0402_1005Metric"
+    ror.footprint = "R0402"
     ror.value = "10k"
     selector.or ~ ror.p2; ror.p1 ~ ldo.power_out.vcc
     rand = new Resistor
-    rand.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rand.footprint = "R0402"
     rand.value = "10k"
     selector.and ~ rand.p2; rand.p1 ~ ldo.power_out.vcc
     rxor = new Resistor
-    rxor.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rxor.footprint = "R0402"
     rxor.value = "10k"
     selector.xor ~ rxor.p2; rxor.p1 ~ ldo.power_out.vcc
     rlatch = new Resistor
-    rlatch.footprint = "Resistor_SMD:R_0402_1005Metric"
+    rlatch.footprint = "R0402"
     rlatch.value = "10k"
     selector.latch ~ rlatch.p2; rlatch.p1 ~ ldo.power_out.vcc
 

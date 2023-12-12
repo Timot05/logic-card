@@ -41,14 +41,14 @@ module LDOReg:
     #input cap
     input_cap = new Capacitor
     input_cap.value = "1uF"
-    input_cap.footprint = "Capacitor_SMD:C_0402_1005Metric"
+    input_cap.footprint = "C0402"
     input_cap.p1 ~ vin
     input_cap.p2 ~ gnd
 
     #output cap
     output_cap = new Capacitor
     output_cap.value = "1uF"
-    output_cap.footprint = "Capacitor_SMD:C_0402_1005Metric"
+    output_cap.footprint = "C0402"
     output_cap.p1 ~ vout
     output_cap.p2 ~ gnd
 
@@ -57,8 +57,8 @@ module LDOReg:
     feedback_div.input ~ vout
     feedback_div.gnd ~ gnd
     feedback_div.output ~ ldo.adj
-    feedback_div.r_top.footprint = "Resistor_SMD:R_0402_1005Metric"
-    feedback_div.r_bt.footprint = "Resistor_SMD:R_0402_1005Metric"
+    feedback_div.r_top.footprint = "R0402"
+    feedback_div.r_bt.footprint = "R0402"
 
 module LDOReg5V from LDOReg:
     feedback_div.r_top.value = "18k"

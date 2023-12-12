@@ -3,5 +3,6 @@ builds:
   default:
     entry: elec/src/logic-card.ato:LogicCard
 dependencies:
-  - rp2040
-  - generics
+- rp2040
+- generics
+- usb-connectors
