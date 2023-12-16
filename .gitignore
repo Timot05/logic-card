@@ -38,3 +38,4 @@ venv/
 
 # Ato stuff
 .ato/
+test-module/
