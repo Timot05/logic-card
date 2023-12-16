@@ -1,0 +1,7 @@
+component _1N4148W_T4:
+    footprint = "SOD-123_L2.8-W1.8-LS3.7-RD"
+    mpn = "C2099"
+    # pins
+    signal A ~ pin 2
+    signal K ~ pin 1
+

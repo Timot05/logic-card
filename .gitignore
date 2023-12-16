@@ -35,3 +35,7 @@ build/
 # Virtual environment
 .venv/
 venv/
+
+# Ato stuff
+.ato/
+test-module/

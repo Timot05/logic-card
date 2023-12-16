@@ -1,0 +1,19 @@
+import Resistor from "generics/resistor.ato"
+import Capacitor from "generics/capacitor.ato"
+import Power from "generics/interfaces.ato"
+
+module Vdiv:
+    signal input
+    signal output
+    signal gnd
+    power = new Power
+    power.vcc ~ input
+    power.gnd ~ gnd
+
+    r_top = new Resistor
+    r_bt = new Resistor
+
+    r_top.p1 ~ input
+    r_top.p2 ~ output
+    r_bt.p1 ~ output
+    r_bt.p2 ~ gnd

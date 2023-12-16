@@ -1,0 +1,9 @@
+# Switch
+component B3F_4005_C397283:
+    footprint = "SW-TH_4P-L12.0-W12.0-P5.00-LS12.5-EH"
+    mpn = "C397283"
+    # pins
+    signal in ~ pin 1
+    in ~ pin 2
+    signal out ~ pin 3
+    out ~ pin 4

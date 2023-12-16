@@ -1,0 +1,9 @@
+component OSC_7D052000K01:
+    # component 7D052000K01
+    footprint = "OSC-SMD_4P-L2.0-W1.6-BL"
+    lcsc_id = "C781784"
+    # pins
+    signal IN ~ pin p1
+    signal OUT ~ pin p3
+    signal GND ~ pin p4
+    GND ~ pin p2

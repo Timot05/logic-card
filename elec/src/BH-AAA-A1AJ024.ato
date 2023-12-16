@@ -1,0 +1,6 @@
+component BH_AAA_A1AJ024:
+    footprint = "BAT-TH_BH-AAA-A1AJ024"
+    mpn = "C5290193"
+    # pins
+    signal minus ~ pin 1
+    signal plus ~ pin 2

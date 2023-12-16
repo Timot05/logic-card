@@ -1,0 +1,29 @@
+import QSPI from "generics.ato"
+import Power from "generics.ato"
+
+component W25Q128JVEIQ:
+    footprint = "WSON-8_L6.0-W8.0-P1.27-BL-EP"
+    lcsc_id = "C401662"
+    # pins
+    signal ncs ~ pin 1
+    signal do ~ pin 2
+    signal io2 ~ pin 3
+    signal gnd ~ pin 4
+    signal di ~ pin 5
+    signal clk ~ pin 6
+    signal io3 ~ pin 7
+    signal vcc ~ pin 8
+    gnd ~ pin 9
+
+    power = new Power
+    power.gnd ~ gnd
+    power.vcc ~ vcc
+
+    qspi = new QSPI
+    qspi.cs ~ ncs
+    qspi.sck ~ clk
+    qspi.io0 ~ di
+    qspi.io1 ~ do
+    qspi.io2 ~ io2
+    qspi.io3 ~ io3
+    qspi.gnd ~ gnd

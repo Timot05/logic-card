@@ -1,0 +1,69 @@
+# C443854
+# easyeda2kicad --full --lcsc_id=C443854 --output ./lib/lib
+# ato view --root-file adjustable_ldo.ato --root-node adjustable_ldo.ato:adjustable_ldo
+
+import Capacitor from "generics/capacitor.ato"
+import Vdiv from "generics.ato"
+import Power from "generics/interfaces.ato"
+
+component LDK220M_R:
+    mpn = "C443854"
+    signal in ~ pin 1
+    signal gnd ~ pin 2
+    signal en ~ pin 3
+    signal out ~ pin 5
+    signal adj ~ pin 4
+
+    footprint = "lib:SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL"
+
+module LDOReg:
+    # Vadj = 1.185V
+    # Vo = Vadj * (1 + R1 / R2) = 1.185V * (1 + R1 / R2)
+
+    signal vin
+    signal vout
+    signal gnd
+
+    power_in = new Power
+    power_in.vcc ~ vin
+    power_in.gnd ~ gnd
+
+    power_out = new Power
+    power_out.vcc ~ vout
+    power_out.gnd ~ gnd
+
+    ldo = new LDK220M_R
+    ldo.in ~ vin
+    ldo.gnd ~ gnd
+    ldo.en ~ vin
+    ldo.out ~ vout
+
+    #input cap
+    input_cap = new Capacitor
+    input_cap.value = "1uF"
+    input_cap.footprint = "C0402"
+    input_cap.p1 ~ vin
+    input_cap.p2 ~ gnd
+
+    #output cap
+    output_cap = new Capacitor
+    output_cap.value = "1uF"
+    output_cap.footprint = "C0402"
+    output_cap.p1 ~ vout
+    output_cap.p2 ~ gnd
+
+    #voltage divider
+    feedback_div = new Vdiv
+    feedback_div.input ~ vout
+    feedback_div.gnd ~ gnd
+    feedback_div.output ~ ldo.adj
+    feedback_div.r_top.footprint = "R0402"
+    feedback_div.r_bt.footprint = "R0402"
+
+module LDOReg5V from LDOReg:
+    feedback_div.r_top.value = "18k"
+    feedback_div.r_bt.value = "5.1k"
+
+module LDOReg3V3 from LDOReg:
+    feedback_div.r_top.value = "18k"
+    feedback_div.r_bt.value = "10k"

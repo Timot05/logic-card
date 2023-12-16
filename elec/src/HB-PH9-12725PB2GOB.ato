@@ -1,0 +1,17 @@
+component HB_PH9_12725PB2GOB:
+    # component HB-PH9-12725PB2GOB
+    footprint = "HDR-SMD_10P-P1.27-V-M-R2-C5-LS5.3"
+    lcsc_id = "C6332249"
+    # pins
+    signal _1 ~ pin p1
+    signal _10 ~ pin p10
+    signal _3 ~ pin p3
+    signal _8 ~ pin p8
+    signal _5 ~ pin p5
+    signal _6 ~ pin p6
+    signal _7 ~ pin p7
+    signal _4 ~ pin p4
+    signal _9 ~ pin p9
+    signal _2 ~ pin p2
+
+    # pin types
