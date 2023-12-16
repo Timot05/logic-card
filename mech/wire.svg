@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="258px" height="230px" viewBox="0 0 258 230" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>wire</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" stroke="#000000" stroke-width="2" cx="72" cy="171" r="39"></circle>
+        <circle id="Oval-2" stroke="#000000" stroke-width="2" cx="199.5" cy="114.5" r="19.5"></circle>
+        <path d="M169.216221,114.181349 L179.772972,114.181349" id="Path-3" stroke="#000000" stroke-width="2"></path>
+        <path d="M71.9615584,114.107601 L71.9615584,117.44215 C71.9615584,119.099004 73.3047041,120.44215 74.9615584,120.44215 L130.643323,120.44215 C132.300178,120.44215 133.643323,121.785296 133.643323,123.44215 L133.643323,128.877705 C133.643323,130.534559 134.986469,131.877705 136.643323,131.877705 L179.560649,131.877705" id="Path-2" stroke="#000000" stroke-width="2" transform="translate(125.761104, 122.992653) scale(1, -1) translate(-125.761104, -122.992653) "></path>
+    </g>
+</svg>

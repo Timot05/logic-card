@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="258px" height="230px" viewBox="0 0 258 230" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>or_gate</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M114.01137,93.9277324 L134.044465,94.6492119 C148.055106,95.1537963 160.98128,102.322552 168.828669,113.940261 L169.199692,114.489545 L168.838299,115.045211 C161.396687,126.487182 148.879085,133.621717 135.242038,134.193744 L114.002561,135.084665 L115.184827,133.420782 C119.749633,126.996424 122.017886,120.693822 122.017886,114.5 C122.017886,108.306178 119.749633,102.003576 115.184827,95.5792181 L114.01137,93.9277324 Z" id="Rectangle" stroke="#000000" stroke-width="2" stroke-linejoin="round"></path>
+        <circle id="Oval" stroke="#000000" stroke-width="2" cx="72" cy="171" r="39"></circle>
+        <circle id="Oval" stroke="#000000" stroke-width="2" cx="72" cy="58" r="39"></circle>
+        <path d="M71.9615584,97.5431561 L71.9615584,99.8777053 C71.9615584,102.086844 73.7524194,103.877705 75.9615584,103.877705 L120,103.877705" id="Path-2" stroke="#000000" stroke-width="2"></path>
+        <path d="M71.9615584,125.543156 L71.9615584,127.877705 C71.9615584,130.086844 73.7524194,131.877705 75.9615584,131.877705 L119,131.877705" id="Path-2" stroke="#000000" stroke-width="2" transform="translate(95.480779, 128.710431) scale(1, -1) translate(-95.480779, -128.710431) "></path>
+        <circle id="Oval-2" stroke="#000000" stroke-width="2" cx="199.5" cy="114.5" r="19.5"></circle>
+        <path d="M169.216221,114.181349 L179.772972,114.181349" id="Path-3" stroke="#000000" stroke-width="2"></path>
+    </g>
+</svg>

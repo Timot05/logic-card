@@ -11,9 +11,9 @@ build-gerbers-default:
     name: kicad/kicad:7.0
     pull_policy: if-not-present
   script:
-    - mkdir -p build/default/src
-    - cd build/default
-    - cp ../../elec/layout/*.kicad_pcb src/
+    - mkdir -p build/wire/src
+    - cd build/wire
+    - cp ../../elec/layout/wire/*.kicad_pcb src/
     - sed -i "s/"'{{GITHASH}}'"/$CI_COMMIT_SHORT_SHA/g" src/*.kicad_pcb
     - mkdir gerbers
     - kicad-cli pcb export gerbers -o gerbers/ src/*.kicad_pcb

@@ -206,3 +206,17 @@ module LogicCard:
     r_mosfet.source ~ ldo.power_out.gnd
     g_mosfet.source ~ ldo.power_out.gnd
     b_mosfet.source ~ ldo.power_out.gnd
+
+module ProgramCard:
+    opposite_support = new PM200V_11_08_H43
+    selector_support = new PM200V_11_08_H43
+    selector_support.in ~ selector_support.out
+
+module CardAnd from ProgramCard:
+    selector_support.latch ~ selector_support.and
+
+module CardOr from ProgramCard:
+    selector_support.latch ~ selector_support.or
+
+module CardWire from ProgramCard:
+    selector_support.latch ~ selector_support.wire
