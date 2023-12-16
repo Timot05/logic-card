@@ -57,7 +57,7 @@ module RGBLedKit:
 
     rg.value = "100"
     rb.value = "100"
-    rr.value = "1.5K"
+    rr.value = "1.5k"
 
     rg.footprint = "R0603"
     rb.footprint = "R0603"
@@ -161,7 +161,7 @@ module LogicCard:
     micro.micro.gpio3 ~ selector.or
     micro.micro.gpio4 ~ selector.and
     micro.micro.gpio5 ~ selector.xor
-    micro.micro.gpio6 ~ selector.latch
+    ldo.power_out.gnd ~ selector.latch
 
     rwire = new Resistor
     rwire.footprint = "R0402"
@@ -183,10 +183,6 @@ module LogicCard:
     rxor.footprint = "R0402"
     rxor.value = "10k"
     selector.xor ~ rxor.p2; rxor.p1 ~ ldo.power_out.vcc
-    rlatch = new Resistor
-    rlatch.footprint = "R0402"
-    rlatch.value = "10k"
-    selector.latch ~ rlatch.p2; rlatch.p1 ~ ldo.power_out.vcc
 
     # Mechanical support on the other side
     opposite_support = new PZ200_1_08_Z
