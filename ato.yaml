@@ -1,7 +1,7 @@
 ato-version: ^0.1.3
 builds:
   default:
-    entry: elec/src/logic-card.ato:CardOr
+    entry: elec/src/logic-card.ato:CardAnd
 dependencies:
 - rp2040
 - generics
