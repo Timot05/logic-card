@@ -6,6 +6,8 @@ import Resistor from "generics/resistor.ato"
 import Power from "generics/interfaces.ato"
 # battery holder
 import BH_AAA_A1AJ024 from "BH-AAA-A1AJ024.ato"
+import Battery from "batteries/batteries.ato"
+import BatteryCR2032 from "batteries/batteries.ato"
 # switch
 import B3F_4005_C397283 from "B3F-4005_C397283.ato"
 # mosfet
@@ -118,18 +120,28 @@ module ButtonPullup:
     power.vcc ~ pullup.p1; pullup.p2 ~ btn.p1; btn.p2 ~ power.gnd
     output ~ pullup.p2
 
+module CoinCells3S1P from Battery:
+    cell_1 = new BatteryCR2032
+    cell_2 = new BatteryCR2032
+    cell_3 = new BatteryCR2032
+
+    power.vcc  ~ cell_1.power.vcc
+    cell_1.power.gnd ~ cell_2.power.vcc
+    cell_2.power.gnd ~ cell_3.power.vcc
+    cell_3.power.gnd ~ power.gnd
+
 
 module LogicCard:
     # Power stuff
     ldo = new LDOReg3V3
-    aaa = new BH_AAA_A1AJ024
+    aaa = new CoinCells3S1P
 
-    aaa.minus ~ ldo.power_in.gnd
+    aaa.power.gnd ~ ldo.power_in.gnd
 
     # The selector will close the circuit and turn on the device
     selector = new PZ200_1_08_Z
     aaa_diode = new _1N4148W_T4
-    aaa.plus ~ selector.in; selector.out ~ aaa_diode.A; aaa_diode.K ~ ldo.power_in.vcc
+    aaa.power.vcc ~ selector.in; selector.out ~ aaa_diode.A; aaa_diode.K ~ ldo.power_in.vcc
 
     # A micro
     micro = new RP2040Kit
