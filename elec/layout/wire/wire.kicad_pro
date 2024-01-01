@@ -228,7 +228,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "../../../build/default/CardWire.net",
+      "netlist": "../../../build/default/Ampoule.net",
       "specctra_dsn": "",
       "step": "",
       "vrml": ""

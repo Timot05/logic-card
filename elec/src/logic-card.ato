@@ -2,7 +2,7 @@ import CPG151101S03 from "CPG151101S03.ato"
 import RP2040Kit from "rp2040/RP2040Kit.ato"
 import USBCConn from "usb-connectors/usb-connectors.ato"
 import LDOReg3V3 from "ldo_reg.ato"
-import Resistor from "generics/resistor.ato"
+import Resistor from "generics/resistors.ato"
 import Power from "generics/interfaces.ato"
 # battery holder
 import BH_AAA_A1AJ024 from "BH-AAA-A1AJ024.ato"
@@ -30,10 +30,10 @@ module SwitchPullUp:
 
 component RGBLed:
     # https://www.adafruit.com/product/848
-    signal r ~ pin 1
+    signal b ~ pin 1
     signal g ~ pin 2
     signal vcc ~ pin 3
-    signal b ~ pin 4
+    signal r ~ pin 4
 
     # Pitch is 1.25. Hoping this 1.27 will work
     footprint = "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical"
@@ -211,9 +211,9 @@ module LogicCard:
 
     led_kit.vcc ~ ldo.power_out.vcc
 
-    micro.micro.gpio22 ~ r_mosfet.gate
+    micro.micro.gpio24 ~ r_mosfet.gate
     micro.micro.gpio23 ~ g_mosfet.gate
-    micro.micro.gpio24 ~ b_mosfet.gate
+    micro.micro.gpio22 ~ b_mosfet.gate
 
     r_mosfet.source ~ ldo.power_out.gnd
     g_mosfet.source ~ ldo.power_out.gnd
@@ -232,3 +232,16 @@ module CardOr from ProgramCard:
 
 module CardWire from ProgramCard:
     selector_support.latch ~ selector_support.wire
+
+
+import LED from "generics/leds.ato"
+
+module Ampoule:
+    ampoule = new LED
+    ampoule.footprint = "R0402"
+    bat = new BatteryCR2032
+    switch = new B3F_4005_C397283
+
+    ampoule.anode ~ switch.in
+    switch.out ~ bat.power.vcc
+    bat.power.gnd ~ ampoule.cathode

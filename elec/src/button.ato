@@ -33,7 +33,7 @@ component Button90Degree from NoButton:
 
     footprint = "lib:KEY-SMD_SKTDLDE010"
 
-import Resistor from "generics/resistor.ato"
+import Resistor from "generics/resistors.ato"
 import Power from "generics/interfaces.ato"
 
 component TS_1187A_B_A_B:
