@@ -40,14 +40,14 @@ module LDOReg:
 
     #input cap
     input_cap = new Capacitor
-    input_cap.value = "1uF"
+    input_cap.value = 1uF +/- 10%
     input_cap.footprint = "C0402"
     input_cap.p1 ~ vin
     input_cap.p2 ~ gnd
 
     #output cap
     output_cap = new Capacitor
-    output_cap.value = "1uF"
+    output_cap.value = 1uF +/- 10%
     output_cap.footprint = "C0402"
     output_cap.p1 ~ vout
     output_cap.p2 ~ gnd
@@ -61,9 +61,9 @@ module LDOReg:
     feedback_div.r_bottom.footprint = "R0402"
 
 module LDOReg5V from LDOReg:
-    feedback_div.r_top.value = "18k"
-    feedback_div.r_bottom.value = "5.1k"
+    feedback_div.r_top.value = 18kohms +/- 5%
+    feedback_div.r_bottom.value = 5.1kohms +/- 5%
 
 module LDOReg3V3 from LDOReg:
-    feedback_div.r_top.value = "18k"
-    feedback_div.r_bottom.value = "10k"
+    feedback_div.r_top.value = 18kohms +/- 5%
+    feedback_div.r_bottom.value = 10kohms +/- 5%

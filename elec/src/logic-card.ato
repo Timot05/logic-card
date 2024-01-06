@@ -22,7 +22,7 @@ module SwitchPullUp:
     signal out
     switch = new B3F_4005_C397283
     r_pd = new Resistor
-    r_pd.value = "10k"
+    r_pd.value = 10kohms +/- 5%
     r_pd.footprint = "C0603"
 
     power.vcc ~ r_pd.p1; r_pd.p2 ~ out
@@ -57,9 +57,9 @@ module RGBLedKit:
     led.g ~ rg.p1; rg.p2 ~ g_sink
     led.b ~ rb.p1; rb.p2 ~ b_sink
 
-    rg.value = "100"
-    rb.value = "100"
-    rr.value = "1.5k"
+    rg.value = 100ohms +/- 10%
+    rb.value = 100ohms +/- 10%
+    rr.value = 1.5kohms +/- 10%
 
     rg.footprint = "R0603"
     rb.footprint = "R0603"
@@ -114,7 +114,7 @@ module ButtonPullup:
     power = new Power
 
     pullup = new Resistor
-    pullup.value = "10k"
+    pullup.value = 10kohms +/- 10%
     pullup.footprint = "R0402"
 
     power.vcc ~ pullup.p1; pullup.p2 ~ btn.p1; btn.p2 ~ power.gnd
@@ -177,23 +177,23 @@ module LogicCard:
 
     rwire = new Resistor
     rwire.footprint = "R0402"
-    rwire.value = "10k"
+    rwire.value = 10kohms +/- 5%
     selector.wire ~ rwire.p2; rwire.p1 ~ ldo.power_out.vcc
     rnot = new Resistor
     rnot.footprint = "R0402"
-    rnot.value = "10k"
+    rnot.value = 10kohms +/- 5%
     selector.not ~ rnot.p2; rnot.p1 ~ ldo.power_out.vcc
     ror = new Resistor
     ror.footprint = "R0402"
-    ror.value = "10k"
+    ror.value = 10kohms +/- 5%
     selector.or ~ ror.p2; ror.p1 ~ ldo.power_out.vcc
     rand = new Resistor
     rand.footprint = "R0402"
-    rand.value = "10k"
+    rand.value = 10kohms +/- 5%
     selector.and ~ rand.p2; rand.p1 ~ ldo.power_out.vcc
     rxor = new Resistor
     rxor.footprint = "R0402"
-    rxor.value = "10k"
+    rxor.value = 10kohms +/- 5%
     selector.xor ~ rxor.p2; rxor.p1 ~ ldo.power_out.vcc
 
     # Mechanical support on the other side

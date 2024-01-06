@@ -55,7 +55,7 @@ module Button_Pullup:
     signal output
     power = new Power
     pullup = new Resistor
-    pullup.value = "10k"
+    pullup.value = 10kohms +/-5%
     pullup.footprint = "Resistor_SMD:R_0402_1005Metric"
 
     power.vcc ~ pullup.p1; pullup.p2 ~ btn.in; btn.out ~ power.gnd
