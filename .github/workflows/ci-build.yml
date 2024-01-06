@@ -1,0 +1,86 @@
+name: CI Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  build-gerbers-default:
+    runs-on: ubuntu-latest
+    container:
+      image: kicad/kicad:7.0
+      options: --user root
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Build Gerbers
+        run: |
+          mkdir -p build/default/src
+          cd build/default
+          cp ../../elec/layout/default/*.kicad_pcb src/
+          sed -i "s/'{{GITHASH}}'/${GITHUB_SHA:0:7}/g" src/*.kicad_pcb
+          mkdir gerbers
+          kicad-cli pcb export gerbers -o gerbers/ src/*.kicad_pcb
+          kicad-cli pcb export drill -o gerbers/ src/*.kicad_pcb
+          zip "gerbers-${GITHUB_SHA:0:7}.zip" gerbers/*
+
+          # Position files for JLCPCB
+          kicad-cli pcb export pos --format csv --units mm --use-drill-file-origin -o ${GITHUB_SHA:0:7}-pos.csv src/*.kicad_pcb
+          POS_HEADER="$(cat ../../metadata/pos-header)"
+          sed -i "1s/.*/$POS_HEADER/" ${GITHUB_SHA:0:7}-pos.csv
+
+          # Export step file
+          kicad-cli pcb export step --subst-models -o board_3d_shape.step src/*.kicad_pcb
+        shell: bash
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/
+
+  build-ato-default:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.atopile.io/atopile/atopile/ci:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Build Ato
+        run: |
+          ato install
+          ato build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/
+
+  store-build:
+    name: Store Build
+    needs: [build-ato-default, build-gerbers-default]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: downloads
+
+      - name: Combine Artifacts
+        run: |
+          mkdir store-build
+          cp -r downloads/* store-build/
+
+      - name: Upload Combined Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: store-build
+          path: store-build/
