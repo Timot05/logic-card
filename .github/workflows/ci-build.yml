@@ -5,15 +5,15 @@ on: [push, pull_request]
 jobs:
   build-gerbers-default:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/atopile/atopile-kicad:pr-4
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Build Gerbers
-        run: ato install && ato build
+      - name: Build
+        uses: docker://ghcr.io/atopile/atopile-kicad:pr-4
+        with:
+          args: ato install && ato build
 
       - name: Upload Combined Artifacts
         uses: actions/upload-artifact@v3
