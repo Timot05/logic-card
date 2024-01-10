@@ -13,7 +13,7 @@ jobs:
       - name: Build
         uses: docker://ghcr.io/atopile/atopile-kicad:pr-4
         with:
-          args: ato install && ato build
+          args: bash -c ato install && ato build
 
       - name: Upload Combined Artifacts
         uses: actions/upload-artifact@v3
