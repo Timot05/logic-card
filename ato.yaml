@@ -1,4 +1,4 @@
-ato-version: ^0.2.0
+ato-version: v0.2.0
 builds:
   default:
     entry: elec/src/logic-card.ato:LogicCard
@@ -6,4 +6,4 @@ dependencies:
 - usb-connectors
 - batteries
 - rp2040
-- generics
+- generics^v2.0.1
