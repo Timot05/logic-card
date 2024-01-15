@@ -2,8 +2,12 @@ ato-version: v0.2.0
 builds:
   default:
     entry: elec/src/logic-card.ato:LogicCard
-  card-or:
+  card_and:
+    entry: elec/src/logic-card.ato:CardAnd
+  card_or:
     entry: elec/src/logic-card.ato:CardOr
+  wire:
+    entry: elec/src/logic-card.ato:CardWire
 dependencies:
 - usb-connectors
 - batteries
