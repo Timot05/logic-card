@@ -14,15 +14,19 @@
 #define BUTTON_PIN_2 14
 
 // states
-#define LATCH_STATE     0b11111
+#define LATCH_STATE     0b11011
 #define WIRE_STATE      0b11110
 #define NOT_STATE       0b11101
-#define OR_STATE        0b11011
+#define OR_STATE        0b11111
 #define AND_STATE       0b10111
 #define XOR_STATE       0b01111
 
 bool wire_logic(bool button_state) {
     return button_state;
+}
+
+bool not_logic(bool button_state) {
+    return !button_state;
 }
 
 bool or_logic(bool button_1_state, bool button_2_state) {
@@ -31,6 +35,10 @@ bool or_logic(bool button_1_state, bool button_2_state) {
 
 bool and_logic(bool button_1_state, bool button_2_state) {
     return button_1_state && button_2_state;
+}
+
+bool xor_logic(bool button_1_state, bool button_2_state) {
+    return button_1_state ^ button_2_state;
 }
 
 void turn_red() {
@@ -58,9 +66,9 @@ void turn_purple() {
 }
 
 void turn_yellow() {
-    digitalWrite(RED_LED_PIN, HIGH);
-    digitalWrite(GREEN_LED_PIN, HIGH);
-    digitalWrite(BLUE_LED_PIN, LOW);
+    digitalWrite(RED_LED_PIN, 80);
+    digitalWrite(GREEN_LED_PIN, 50);
+    digitalWrite(BLUE_LED_PIN, 0);
 }
 
 void turn_white() {
@@ -128,7 +136,12 @@ void loop() {
             }
             break;
         case NOT_STATE:
-            turn_green();
+            if (not_logic(button_2_state)) {
+                turn_green();
+            }
+            else{
+                turn_off();
+            }
             break;
         case OR_STATE:
             if (or_logic(button_1_state, button_2_state)) {
@@ -147,7 +160,12 @@ void loop() {
             }
             break;
         case XOR_STATE:
-            turn_green();
+            if (xor_logic(button_1_state, button_2_state)) {
+                turn_yellow();
+            }
+            else {
+                turn_off();
+            }
             break;
         default:
             turn_green();
