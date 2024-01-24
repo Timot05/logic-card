@@ -89,13 +89,13 @@ module ESP32_S2_MINI_2_N4_kit:
     c1.p1 ~ power.vcc
     c1.p2 ~ power.gnd
     c1.value = "0.1uF"
-    c1.footprint = "Capacitor_SMD:C_0402_1005Metric"
+    c1.package = "0402"
 
     c2 = new Capacitor
     c2.p1 ~ power.vcc
     c2.p2 ~ power.gnd
     c2.value = "22uF"
-    c2.footprint = "Capacitor_SMD:C_0805_2012Metric"
+    c2.package = "0603"
 
     # USB2 interface connections
     usb = new USB2
@@ -112,13 +112,13 @@ module ESP32_S2_MINI_2_N4_kit:
     r_i2c_sda.p1 ~ i2c.sda
     r_i2c_sda.p2 ~ power.vcc
     r_i2c_sda.value = "10K"
-    r_i2c_sda.footprint = "Resistor_SMD:R_0402_1005Metric"
+    r_i2c_sda.package = "0402"
 
     r_i2c_scl = new Resistor
     r_i2c_scl.p1 ~ i2c.scl
     r_i2c_scl.p2 ~ power.vcc
     r_i2c_scl.value = "10K"
-    r_i2c_scl.footprint = "Resistor_SMD:R_0402_1005Metric"
+    r_i2c_scl.package = "0402"
 
     # JTAG interface - assigning typical JTAG pins
     jtag = new JTAG
