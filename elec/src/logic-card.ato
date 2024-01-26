@@ -1,7 +1,7 @@
 import CPG151101S03 from "CPG151101S03.ato"
 import RP2040Kit from "rp2040/RP2040Kit.ato"
 import USBCConn from "usb-connectors/usb-connectors.ato"
-import LDOReg3V3 from "ldo_reg.ato"
+import LDOReg3V3 from "regulators/regulators.ato"
 import Resistor from "generics/resistors.ato"
 import Power from "generics/interfaces.ato"
 # battery holder
@@ -23,7 +23,7 @@ module SwitchPullUp:
     switch = new B3F_4005_C397283
     r_pd = new Resistor
     r_pd.value = 10kohms +/- 5%
-    r_pd.package = "0603"
+    r_pd.footprint = "R0603"
 
     power.vcc ~ r_pd.p1; r_pd.p2 ~ out
     out ~ switch.in; switch.out ~ power.gnd
@@ -61,9 +61,9 @@ module RGBLedKit:
     rb.value = 100ohms +/- 10%
     rr.value = 1.5kohms +/- 10%
 
-    rg.package = "0603"
-    rb.package = "0603"
-    rr.package = "0603"
+    rg.footprint = "R0603"
+    rb.footprint = "R0603"
+    rr.footprint = "R0603"
 
 component PinHeader14Female:
     # KH_127PH180_1X8P_L72
@@ -115,7 +115,7 @@ module ButtonPullup:
 
     pullup = new Resistor
     pullup.value = 10kohms +/- 10%
-    pullup.package = "0402"
+    pullup.footprint = "R0402"
 
     power.vcc ~ pullup.p1; pullup.p2 ~ btn.p1; btn.p2 ~ power.gnd
     output ~ pullup.p2
@@ -176,23 +176,23 @@ module LogicCard:
     ldo.power_out.gnd ~ selector.latch
 
     rwire = new Resistor
-    rwire.package = "0402"
+    rwire.footprint = "R0402"
     rwire.value = 10kohms +/- 5%
     selector.wire ~ rwire.p2; rwire.p1 ~ ldo.power_out.vcc
     rnot = new Resistor
-    rnot.package = "0402"
+    rnot.footprint = "R0402"
     rnot.value = 10kohms +/- 5%
     selector.not ~ rnot.p2; rnot.p1 ~ ldo.power_out.vcc
     ror = new Resistor
-    ror.package = "0402"
+    ror.footprint = "R0402"
     ror.value = 10kohms +/- 5%
     selector.or ~ ror.p2; ror.p1 ~ ldo.power_out.vcc
     rand = new Resistor
-    rand.package = "0402"
+    rand.footprint = "R0402"
     rand.value = 10kohms +/- 5%
     selector.and ~ rand.p2; rand.p1 ~ ldo.power_out.vcc
     rxor = new Resistor
-    rxor.package = "0402"
+    rxor.footprint = "R0402"
     rxor.value = 10kohms +/- 5%
     selector.xor ~ rxor.p2; rxor.p1 ~ ldo.power_out.vcc
 
@@ -238,7 +238,7 @@ import LED from "generics/leds.ato"
 
 module Ampoule:
     ampoule = new LED
-    ampoule.package = "0402"
+    ampoule.footprint = "R0402"
     bat = new BatteryCR2032
     switch = new B3F_4005_C397283
 
