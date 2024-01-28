@@ -1,7 +1,7 @@
 import CPG151101S03 from "CPG151101S03.ato"
 import RP2040Kit from "rp2040/RP2040Kit.ato"
 import USBCConn from "usb-connectors/usb-connectors.ato"
-import LDOReg3V3 from "regulators/regulators.ato"
+import LDOReg3V3 from "ldo_reg.ato"
 import Resistor from "generics/resistors.ato"
 import Power from "generics/interfaces.ato"
 # battery holder
@@ -16,6 +16,10 @@ import _2N7002KW_R1_00001 from "2N7002KW_R1_00001.ato"
 import ButtonTS1187A from "button.ato"
 # Diode
 import _1N4148W_T4 from "1N4148WT4.ato"
+
+# import pogo pin
+import KH_102540_DZ from "pogo_pin_pad.ato"
+import PogoPad from "pogo_pin_pad.ato"
 
 module SwitchPullUp:
     power = new Power
@@ -65,47 +69,7 @@ module RGBLedKit:
     rb.footprint = "R0603"
     rr.footprint = "R0603"
 
-component PinHeader14Female:
-    # KH_127PH180_1X8P_L72
-    footprint = "PinHeader_1x14_P2.54mm_Vertical"
-    mpn = "-"
 
-    pin 1 ~ signal in
-    pin 2 ~ signal wire
-    pin 3 ~ signal not
-    pin 4 ~ signal or
-    pin 5 ~ signal and
-    pin 6 ~ signal xor
-    pin 7 ~ signal latch
-    pin 8 ~ signal out
-
-# Those are the receptacle
-component PM200V_11_08_H43:
-    footprint = "HDR-TH_8P-P2.00-V-F"
-    mpn = "C2925555"
-    # pins
-    signal in ~ pin 1
-    signal wire ~ pin 2
-    signal not ~ pin 3
-    signal or ~ pin 4
-    signal and ~ pin 5
-    signal xor ~ pin 6
-    signal latch ~ pin 7
-    signal out ~ pin 8
-
-# Those are the pins
-component PZ200_1_08_Z:
-    footprint = "HDR-TH_8P-P2.00-V-M"
-    mpn = "C2905954"
-    # pins
-    signal in ~ pin 1
-    signal wire ~ pin 2
-    signal not ~ pin 3
-    signal or ~ pin 4
-    signal and ~ pin 5
-    signal xor ~ pin 6
-    signal latch ~ pin 7
-    signal out ~ pin 8
 
 module ButtonPullup:
     btn = new ButtonTS1187A
@@ -138,10 +102,8 @@ module LogicCard:
 
     aaa.power.gnd ~ ldo.power_in.gnd
 
-    # The selector will close the circuit and turn on the device
-    selector = new PZ200_1_08_Z
     aaa_diode = new _1N4148W_T4
-    aaa.power.vcc ~ selector.in; selector.out ~ aaa_diode.A; aaa_diode.K ~ ldo.power_in.vcc
+    aaa.power.vcc ~ aaa_diode.A; aaa_diode.K ~ ldo.power_in.vcc
 
     # A micro
     micro = new RP2040Kit
@@ -167,37 +129,28 @@ module LogicCard:
     switch_1.power ~ ldo.power_out
     switch_2.power ~ ldo.power_out
 
+    pogo_1_program = new KH_102540_DZ
+    pogo_2_program = new KH_102540_DZ
+    pogo_3_program = new KH_102540_DZ
     # Connecting the micro to the plates
-    micro.micro.gpio1 ~ selector.wire
-    micro.micro.gpio2 ~ selector.not
-    micro.micro.gpio3 ~ selector.or
-    micro.micro.gpio4 ~ selector.and
-    micro.micro.gpio5 ~ selector.xor
-    ldo.power_out.gnd ~ selector.latch
+    micro.micro.gpio1 ~ pogo_1_program.in
+    micro.micro.gpio2 ~ pogo_2_program.in
+    micro.micro.gpio3 ~ pogo_3_program.in
 
-    rwire = new Resistor
-    rwire.footprint = "R0402"
-    rwire.value = 10kohms +/- 5%
-    selector.wire ~ rwire.p2; rwire.p1 ~ ldo.power_out.vcc
-    rnot = new Resistor
-    rnot.footprint = "R0402"
-    rnot.value = 10kohms +/- 5%
-    selector.not ~ rnot.p2; rnot.p1 ~ ldo.power_out.vcc
-    ror = new Resistor
-    ror.footprint = "R0402"
-    ror.value = 10kohms +/- 5%
-    selector.or ~ ror.p2; ror.p1 ~ ldo.power_out.vcc
-    rand = new Resistor
-    rand.footprint = "R0402"
-    rand.value = 10kohms +/- 5%
-    selector.and ~ rand.p2; rand.p1 ~ ldo.power_out.vcc
-    rxor = new Resistor
-    rxor.footprint = "R0402"
-    rxor.value = 10kohms +/- 5%
-    selector.xor ~ rxor.p2; rxor.p1 ~ ldo.power_out.vcc
+    r_pad_1 = new Resistor
+    r_pad_1.footprint = "R0402"
+    r_pad_1.value = 10kohms +/- 5%
+    pogo_1_program.in ~ r_pad_1.p2; r_pad_1.p1 ~ ldo.power_out.gnd
 
-    # Mechanical support on the other side
-    opposite_support = new PZ200_1_08_Z
+    r_pad_2 = new Resistor
+    r_pad_2.footprint = "R0402"
+    r_pad_2.value = 10kohms +/- 5%
+    pogo_2_program.in ~ r_pad_2.p2; r_pad_2.p1 ~ ldo.power_out.gnd
+
+    r_pad_3 = new Resistor
+    r_pad_3.footprint = "R0402"
+    r_pad_3.value = 10kohms +/- 5%
+    pogo_3_program.in ~ r_pad_3.p2; r_pad_3.p1 ~ ldo.power_out.gnd
 
     # Lastly, an LED
     led_kit = new RGBLedKit
@@ -220,28 +173,17 @@ module LogicCard:
     b_mosfet.source ~ ldo.power_out.gnd
 
 module ProgramCard:
-    opposite_support = new PM200V_11_08_H43
-    selector_support = new PM200V_11_08_H43
-    selector_support.in ~ selector_support.out
+    pogo_pad_1_program = new PogoPad
+    pogo_pad_2_program = new PogoPad
+    pogo_pad_3_program = new PogoPad
+
+    pogo_pad_3v3 = new PogoPad
 
 module CardAnd from ProgramCard:
-    selector_support.latch ~ selector_support.and
+    pogo_pad_3v3.in ~ pogo_pad_3_program.in
 
 module CardOr from ProgramCard:
-    selector_support.latch ~ selector_support.or
+    pogo_pad_3v3.in ~ pogo_pad_2_program.in
 
 module CardWire from ProgramCard:
-    selector_support.latch ~ selector_support.wire
-
-
-import LED from "generics/leds.ato"
-
-module Ampoule:
-    ampoule = new LED
-    ampoule.footprint = "R0402"
-    bat = new BatteryCR2032
-    switch = new B3F_4005_C397283
-
-    ampoule.anode ~ switch.in
-    switch.out ~ bat.power.vcc
-    bat.power.gnd ~ ampoule.cathode
+    pogo_pad_3v3.in ~ pogo_pad_1_program.in

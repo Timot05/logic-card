@@ -1,0 +1,14 @@
+component KH_102540_DZ:
+    # component KH_102540_DZ
+    footprint = "CONN-SMD_KH-102540-DZ"
+    lcsc_id = "C530675"
+    mpn = "C530675"
+    # pins
+    signal in ~ pin 1
+
+component PogoPad:
+    mpn = "unknown"
+    #TODO: switch the footprint
+    footprint = "CONN-SMD_KH-102540-DZ"
+    signal in ~ pin 1
+
