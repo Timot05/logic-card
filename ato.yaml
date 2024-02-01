@@ -1,4 +1,4 @@
-ato-version: v0.3.0
+ato-version: v0.2.0
 builds:
   default:
     entry: elec/src/logic-card.ato:LogicCard
