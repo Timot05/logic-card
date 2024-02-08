@@ -1,0 +1,21 @@
+component MCP2518FDT_E_SL:
+    # component MCP2518FDT_E_SL
+    footprint = "SOIC-14_L8.7-W3.9-P1.27-LS6.0-BL"
+    lcsc_id = "C626758"
+    mpn = "C626758"
+    # pins
+    signal TXCAN ~ pin 1
+    signal RXCAN ~ pin 2
+    signal CLKO_SOF ~ pin 3
+    signal INT_ ~ pin 4
+    signal OSC2 ~ pin 5
+    signal OSC1 ~ pin 6
+    signal VSS ~ pin 7
+    signal INT1__GPIO1 ~ pin 8
+    signal INT0__GPIO0_XSTBY ~ pin 9
+    signal SCK ~ pin 10
+    signal SDI ~ pin 11
+    signal SDO ~ pin 12
+    signal nCS ~ pin 13
+    signal VDD ~ pin 14
+

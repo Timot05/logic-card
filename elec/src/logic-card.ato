@@ -22,8 +22,8 @@ module SwitchPullUp:
     signal out
     switch = new B3F_4005_C397283
     r_pd = new Resistor
-    r_pd.value = 10kohms +/- 5%
-    r_pd.package = "0603"
+    r_pd.value = 10kohms +/- 20%
+    r_pd.footprint = "R0402"
 
     power.vcc ~ r_pd.p1; r_pd.p2 ~ out
     out ~ switch.in; switch.out ~ power.gnd

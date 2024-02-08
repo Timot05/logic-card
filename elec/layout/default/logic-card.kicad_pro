@@ -248,7 +248,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "../../../build/default/LogicCard.net",
+      "netlist": "../../../build/default.net",
       "specctra_dsn": "",
       "step": "",
       "vrml": ""
