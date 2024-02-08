@@ -248,7 +248,11 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
+<<<<<<< HEAD
       "netlist": "../../../build/default.net",
+=======
+      "netlist": "../../../../blinky/build/default.net",
+>>>>>>> aca2fd0c6bcbcf50701e79c9a44458134182e416
       "specctra_dsn": "",
       "step": "",
       "vrml": ""
